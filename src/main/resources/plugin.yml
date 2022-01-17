@@ -1,0 +1,9 @@
+name: GPEvents
+main: fr.peaceandcube.gpevents.GPEvents
+version: ${version}
+author: YanisBft
+website: https://github.com/PeaceAndCubeMC/GPEvents
+api-version: 1.18
+
+depend:
+  - GriefPrevention

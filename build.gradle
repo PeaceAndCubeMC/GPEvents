@@ -1,0 +1,52 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+}
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+group = project.gpevents_group
+archivesBaseName = project.gpevents_name
+version = project.gpevents_version
+
+repositories {
+    // Paper
+    maven { url "https://papermc.io/repo/repository/maven-public/" }
+    // GriefPrevention
+    maven { url "https://jitpack.io" }
+}
+
+configurations {
+    include
+    include.canBeResolved = true
+    compileOnly.extendsFrom(include)
+}
+
+dependencies {
+    compileOnly "io.papermc.paper:paper-api:${paper_version}"
+
+    compileOnly "com.github.TechFortress:GriefPrevention:${griefprevention_version}"
+}
+
+build {
+    dependsOn(shadowJar)
+}
+
+shadowJar {
+    configurations = [project.configurations.include]
+    classifier(null)
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.release = 17
+}
+
+processResources {
+    filesMatching('plugin.yml') {
+        expand(
+                version: version
+        )
+    }
+}
