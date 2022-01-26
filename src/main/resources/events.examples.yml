@@ -1,0 +1,31 @@
+NAME:
+  type: create
+
+  player: "@p"
+  world: world
+  area: 100
+  greater_pos:
+    x:
+      min: 1
+      max: 10
+    z:
+      min: 1
+      max: 10
+  lesser_pos:
+    x: 0
+    z: 0
+  claim_owner: "@p"
+  is_subdivision: false
+  trust_permission: build
+  trust_target: username
+  player_command: /command
+  player_position:
+    x: 0
+    y:
+      min: 1
+      max: 10
+    z: 0
+
+  commands:
+    - command1
+    - command2

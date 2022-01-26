@@ -7,3 +7,23 @@ api-version: 1.18
 
 depend:
   - GriefPrevention
+
+commands:
+  removeclaimat:
+    description: Remove a claim at a specified location
+    permission: gpevents.removeclaimat
+    permission-message: §cYou do not have the permission to use this command.
+    usage: "§eUsage: §r/removeclaimat <world> <x> <y> <z> [<checkSubdivisions>]"
+  gpevents:
+    description: Reload the plugin
+    permission: gpevents.gpevents
+    permission-message: §cYou do not have the permission to use this command.
+    usage: "§eUsage: §r/gpevents reload"
+
+permissions:
+  gpevents.gpevents:
+    description: Allows you to use the /gpevents command
+    default: op
+  gpevents.removeclaimat:
+    description: Allows you to use the /removeclaimat command
+    default: op
