@@ -6,6 +6,7 @@ import fr.peaceandcube.gpevents.data.GPEvent;
 import fr.peaceandcube.gpevents.data.GPEventType;
 import fr.peaceandcube.gpevents.data.TrustPermission;
 import fr.peaceandcube.gpevents.file.EventsFile;
+import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.events.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -14,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,7 +68,7 @@ public class GPEventListener implements Listener {
     }
 
     @EventHandler
-    public void onClaimResized(ClaimModifiedEvent event) {
+    public void onClaimResized(ClaimResizeEvent event) {
         List<GPEvent> resizeEvents = GPEvents.events.stream().filter(e -> e.type().equals(GPEventType.RESIZE)).toList();
         // System.out.println(resizeEvents);
         for (GPEvent resizeEvent : resizeEvents) {
@@ -91,14 +93,15 @@ public class GPEventListener implements Listener {
         List<GPEvent> trustEvents = GPEvents.events.stream().filter(e -> e.type().equals(GPEventType.TRUST) || e.type().equals(GPEventType.UNTRUST)).toList();
         // System.out.println(trustEvents);
         for (GPEvent trustEvent : trustEvents) {
-            if (isEqual(trustEvent.world(), event.getClaims().get(0).getGreaterBoundaryCorner().getWorld())
-                    && (trustEvent.area() < 0 || trustEvent.area() == event.getClaims().get(0).getArea())
-                    && (trustEvent.greaterPos() == null || isInRange(trustEvent.greaterPos().x(), event.getClaims().get(0).getGreaterBoundaryCorner().getBlockX()))
-                    && (trustEvent.greaterPos() == null || isInRange(trustEvent.greaterPos().z(), event.getClaims().get(0).getGreaterBoundaryCorner().getBlockZ()))
-                    && (trustEvent.lesserPos() == null || isInRange(trustEvent.lesserPos().x(), event.getClaims().get(0).getLesserBoundaryCorner().getBlockX()))
-                    && (trustEvent.lesserPos() == null || isInRange(trustEvent.lesserPos().z(), event.getClaims().get(0).getLesserBoundaryCorner().getBlockZ()))
-                    && isInList(trustEvent.claimOwner(), event.getClaims().get(0).getOwnerID())
-                    && isEqual(trustEvent.isSubdivision(), event.getClaims().get(0).parent != null)
+            List<Claim> claims = new ArrayList<>(event.getClaims());
+            if (isEqual(trustEvent.world(), claims.get(0).getGreaterBoundaryCorner().getWorld())
+                    && (trustEvent.area() < 0 || trustEvent.area() == claims.get(0).getArea())
+                    && (trustEvent.greaterPos() == null || isInRange(trustEvent.greaterPos().x(), claims.get(0).getGreaterBoundaryCorner().getBlockX()))
+                    && (trustEvent.greaterPos() == null || isInRange(trustEvent.greaterPos().z(), claims.get(0).getGreaterBoundaryCorner().getBlockZ()))
+                    && (trustEvent.lesserPos() == null || isInRange(trustEvent.lesserPos().x(), claims.get(0).getLesserBoundaryCorner().getBlockX()))
+                    && (trustEvent.lesserPos() == null || isInRange(trustEvent.lesserPos().z(), claims.get(0).getLesserBoundaryCorner().getBlockZ()))
+                    && isInList(trustEvent.claimOwner(), claims.get(0).getOwnerID())
+                    && isEqual(trustEvent.isSubdivision(), claims.get(0).parent != null)
                     && (!event.isGiven() || isEqual(trustEvent.trustPermission(), TrustPermission.TRUST_PERMISSIONS.get(event.getClaimPermission())))
                     && isEqual(trustEvent.trustTarget(), event.getIdentifier()))
             {
